@@ -12,6 +12,7 @@
 }
 
 .btn {
+  cursor: pointer;
   display: flex;
   justify-content: center;
   padding: 5px 10px;
