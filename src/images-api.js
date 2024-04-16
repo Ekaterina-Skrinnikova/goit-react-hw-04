@@ -8,10 +8,12 @@ axios.interceptors.request.use((config) => {
   return config;
 });
 
-export const fetchImages = async (searchQuery) => {
+export const fetchImages = async (searchQuery, page) => {
   const response = await axios.get("/search/photos", {
     params: {
       query: searchQuery,
+      per_page: 8,
+      page,
     },
   });
   return response.data.results;
