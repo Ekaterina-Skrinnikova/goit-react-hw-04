@@ -1,7 +1,12 @@
 import Modal from "react-modal";
+import css from "./ImageModal.module.css";
 
-export default function ImageModal() {
+export default function ImageModal({ isOpen, modalImg, closeModal, alt }) {
+  Modal.setAppElement(document.body);
   const customStyles = {
+    overlay: {
+      backgroundColor: "rgba(0, 0, 0, 0.75)",
+    },
     content: {
       top: "50%",
       left: "50%",
@@ -13,15 +18,9 @@ export default function ImageModal() {
   };
   return (
     <div>
-      <button>Open Modal</button>
-      <Modal
-        isOpen={modalIsOpen}
-        onAfterOpen={afterOpenModal}
-        onRequestClose={closeModal}
-        style={customStyles}
-        contentLabel="Example Modal"
-      >
-        <img onClick={openModal} src={urls.small} alt={description} />
+      <Modal isOpen={isOpen} onRequestClose={closeModal} style={customStyles}>
+        <img src={modalImg} alt={alt} width="1000" height="800" />
+        <p className={css.text}>{alt}</p>
       </Modal>
     </div>
   );

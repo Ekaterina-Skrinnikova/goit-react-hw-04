@@ -7,3 +7,4 @@ export default function ImageCard({ image: { urls, description } }) {
     </div>
   );
 }
+//

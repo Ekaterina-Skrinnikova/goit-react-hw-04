@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
+import { fetchImages } from "../../images-api";
+
 import SearchBar from "../SearchBar/SearchBar";
 import ImageGallery from "../ImageGallery/ImageGallery";
-// import ImageModal from "../ImageModal/ImageModal";
-import { fetchImages } from "../../images-api";
-import { Bars } from "react-loader-spinner";
+import ImageModal from "../ImageModal/ImageModal";
+import LoadMoreBtn from "../LoadMoreBtn/LoadMoreBtn";
 
 import css from "./App.module.css";
+import ErrorMessage from "../ErrorMessage/ErrorMessage";
+import Loader from "../Loader/Loader";
 
 export default function App() {
   const [images, setImages] = useState([]);
@@ -13,7 +16,21 @@ export default function App() {
   const [error, setError] = useState(false);
   const [page, setPage] = useState(1);
   const [query, setQuery] = useState("");
-  // const [isOpen, setIsOpen] = useState(false);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [description, setDescription] = useState(null);
+
+  const openModal = (bigImg, alt) => {
+    setSelectedImage(bigImg);
+    setDescription(alt);
+    setModalIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setSelectedImage(null);
+    setDescription(null);
+    setModalIsOpen(false);
+  };
 
   const handleQuery = async (newQuery) => {
     setQuery(newQuery);
@@ -49,28 +66,24 @@ export default function App() {
   return (
     <>
       <SearchBar onSubmit={handleQuery} />
-      {error && (
-        <b className={css.error}>Ooops! There was an error! Please reload!</b>
+      {error && <ErrorMessage />}
+
+      {images.length > 0 && (
+        <ImageGallery listImages={images} openModal={openModal} />
       )}
 
-      {images.length > 0 && <ImageGallery listImages={images} />}
-      {isLoading && (
-        <Bars
-          height="25"
-          width="25"
-          color="#4fa94d"
-          ariaLabel="bars-loading"
-          wrapperStyle={{}}
-          wrapperClass={css.container}
-          visible={true}
-        />
-      )}
+      {isLoading && <Loader />}
 
       {images.length > 0 && !isLoading && (
-        <button className={css.btn} onClick={handleLoadMore}>
-          Load more
-        </button>
+        <LoadMoreBtn onClick={handleLoadMore} />
       )}
+
+      <ImageModal
+        isOpen={modalIsOpen}
+        modalImg={selectedImage}
+        alt={description}
+        closeModal={closeModal}
+      />
     </>
   );
 }
