@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react";
+import { Toaster } from "react-hot-toast";
 import { fetchImages } from "../../images-api";
-
 import SearchBar from "../SearchBar/SearchBar";
 import ImageGallery from "../ImageGallery/ImageGallery";
 import ImageModal from "../ImageModal/ImageModal";
 import LoadMoreBtn from "../LoadMoreBtn/LoadMoreBtn";
-
-import css from "./App.module.css";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
 import Loader from "../Loader/Loader";
 
@@ -84,6 +82,8 @@ export default function App() {
         alt={description}
         closeModal={closeModal}
       />
+
+      <Toaster />
     </>
   );
 }
